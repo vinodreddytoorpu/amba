@@ -1,0 +1,4 @@
+`define ADDR_WIDTH 32
+`define DATA_WIDTH 32
+`define USER_REQ_WIDTH 128
+`define USER_DATA_WIDTH (`DATA_WIDTH/2)
