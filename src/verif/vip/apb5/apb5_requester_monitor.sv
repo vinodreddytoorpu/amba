@@ -14,6 +14,8 @@ class apb5_requester_monitor #(
 
   uvm_component parent_comp;
 
+  uvm_analysis_port #(apb5_packet #(ADDR_WIDTH, DATA_WIDTH, USER_REQ_WIDTH, USER_DATA_WIDTH)) ap;
+
   extern function new(string name = "apb5_requester_monitor", uvm_component parent);
   extern function void build_phase(uvm_phase phase);
   extern function void connect_phase(uvm_phase phase);
@@ -22,6 +24,7 @@ endclass : apb5_requester_monitor
 
 function apb5_requester_monitor::new(string name = "apb5_requester_monitor", uvm_component parent);
   super.new(name, parent);
+  ap = new("ap", this);
 endfunction : new
 
 function void apb5_requester_monitor::build_phase(uvm_phase phase);

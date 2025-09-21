@@ -8,6 +8,8 @@ class amba_environment extends uvm_env;
 
   apb5_environment #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_env;
 
+  amba_apb5_requester_subscriber apb5_comp_sub[];
+
   amba_virtual_sequencer v_seqr;
 
   extern function new(string name = "amba_environment", uvm_component parent);
@@ -36,6 +38,14 @@ function void amba_environment::build_phase(uvm_phase phase);
   v_seqr = amba_virtual_sequencer::type_id::create("v_seqr", this);
   v_seqr.cfg = cfg;
   `uvm_info(get_name(), "Creating the AMBA Virtual Sequencer", UVM_LOW)
+
+  if(cfg.apb5_cfg.is_requester) begin
+    apb5_comp_sub = new[cfg.apb5_cfg.no_of_requester];
+    foreach(apb5_comp_sub[i]) begin
+      apb5_comp_sub[i] = amba_apb5_requester_subscriber::type_id::create($sformatf("apb5_comp_sub_%0d", i), this);
+      apb5_comp_sub[i].env = this;
+    end
+  end
 endfunction : build_phase
 
 function void amba_environment::connect_phase(uvm_phase phase);
@@ -43,6 +53,8 @@ function void amba_environment::connect_phase(uvm_phase phase);
   
   if(cfg.apb5_cfg.is_requester) begin
     foreach(v_seqr.apb5_req_seqr[i]) v_seqr.apb5_req_seqr[i] = apb5_env.requester_agt[i].seqr;
+
+    foreach(apb5_comp_sub[j]) apb5_env.requester_agt[j].mon.ap.connect(apb5_comp_sub[j].analysis_export);
   end
   if(cfg.apb5_cfg.is_completer) begin
     foreach(v_seqr.apb5_comp_seqr[i]) v_seqr.apb5_comp_seqr[i] = apb5_env.completer_agt[i].seqr;
