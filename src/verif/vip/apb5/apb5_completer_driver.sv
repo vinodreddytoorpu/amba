@@ -40,7 +40,6 @@ endfunction : connect_phase
 task apb5_completer_driver::main_phase(uvm_phase phase);
   super.main_phase(phase);
 
-
   fork
     begin
       forever begin
