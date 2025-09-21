@@ -2,7 +2,7 @@
 class amba_apb5_completer_write_read_test extends amba_base_test;
   `uvm_component_utils(amba_apb5_completer_write_read_test)
 
-  amba_apb5_completer_write_read_seq apb5_write_read_seq;
+  amba_apb5_completer_write_read_seq apb5_comp_write_read_seq;
 
   extern function new(string name = "amba_apb5_completer_write_read_test", uvm_component parent);
   extern function void build_phase(uvm_phase phase);
@@ -25,9 +25,9 @@ endfunction : connect_phase
 task amba_apb5_completer_write_read_test::main_phase(uvm_phase phase);
   super.main_phase(phase);
   phase.raise_objection(this);
-  apb5_write_read_seq = amba_apb5_completer_write_read_seq::type_id::create("apb5_write_read_seq");
-  apb5_write_read_seq.env = env;
-  apb5_write_read_seq.start(env.v_seqr);
+  apb5_comp_write_read_seq = amba_apb5_completer_write_read_seq::type_id::create("apb5_comp_write_read_seq");
+  apb5_comp_write_read_seq.env = env;
+  apb5_comp_write_read_seq.start(env.v_seqr);
   #100ns;
   phase.drop_objection(this);
 endtask : main_phase

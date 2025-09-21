@@ -8,4 +8,5 @@ package amba_seq_package;
 
   `include "./seqs/amba_base_virtual_seq.sv"
   `include "./seqs/amba_apb5_completer_write_read_seq.sv"
+  `include "./seqs/amba_apb5_requester_write_read_seq.sv"
 endpackage : amba_seq_package

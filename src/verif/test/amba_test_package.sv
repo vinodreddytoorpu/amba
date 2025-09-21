@@ -14,4 +14,5 @@ package amba_test_package;
 
   `include "./amba_base_test/amba_base_test.sv"
   `include "./amba_apb5_completer_write_read_test/amba_apb5_completer_write_read_test.sv"
+  `include "./amba_apb5_requester_write_read_test/amba_apb5_requester_write_read_test.sv"
 endpackage : amba_test_package
