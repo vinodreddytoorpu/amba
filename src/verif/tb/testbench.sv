@@ -42,85 +42,72 @@ module top;
     return (addr >= range_start && addr <= range_end);
   endfunction : addr_in_range
 
+  apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_requester0_if(clock, resetn);
+  apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_completer0_if(clock, resetn);
+  apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_completer1_if(clock, resetn);
+  
   // Address decoding logic to select the completer
   assign completer0_select = addr_in_range(apb5_requester0_if.paddr, `AMBA_APB5_COMPLETER1_ADDR_START, `AMBA_APB5_COMPLETER1_ADDR_END);
   assign completer1_select = addr_in_range(apb5_requester0_if.paddr, `AMBA_APB5_COMPLETER1_ADDR_START, `AMBA_APB5_COMPLETER1_ADDR_END);
 
-  // apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_requester0_if (clock, resetn);
+  // From APB5 requester outputs to top signals
+  assign paddr   = apb5_requester0_if.paddr;
+  assign pprot   = apb5_requester0_if.pprot;
+  assign pselx   = apb5_requester0_if.pselx;
+  assign penable = apb5_requester0_if.penable;
+  assign pwrite  = apb5_requester0_if.pwrite;
+  assign pwdata  = apb5_requester0_if.pwdata;
+  assign pstrb   = apb5_requester0_if.pstrb;
+  assign pwakeup = apb5_requester0_if.pwakeup;
+  assign pauser  = apb5_requester0_if.pauser;
+  assign pwuser  = apb5_requester0_if.pwuser;
 
-  // apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_completer0_if (clock, resetn);
+  // From APB5 requester inputs to top signals
+  assign apb5_requester0_if.pready  = pready;
+  assign apb5_requester0_if.prdata  = prdata;
+  assign apb5_requester0_if.pslverr = pslverr;
+  assign apb5_requester0_if.pruser  = pruser;
+  assign apb5_requester0_if.pbuser  = pbuser;
 
-  // apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_completer1_if (clock, resetn);
+  // From top signals to APB5 completer0 inputs
+  assign apb5_completer0_if.paddr   = paddr;
+  assign apb5_completer0_if.pprot   = pprot;
+  assign apb5_completer0_if.pselx   = pselx & completer0_select;
+  assign apb5_completer0_if.penable = penable & completer0_select;
+  assign apb5_completer0_if.pwrite  = pwrite;
+  assign apb5_completer0_if.pwdata  = pwdata;
+  assign apb5_completer0_if.pstrb   = pstrb;
+  assign apb5_completer0_if.pwakeup = pwakeup;
+  assign apb5_completer0_if.pauser  = pauser;
+  assign apb5_completer0_if.pwuser  = pwuser;
 
-  bind top apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_requester0_if (
-    .pclk    ( clock   ),
-    .presetn ( resetn  ),
-    .paddr   ( paddr   ),
-    .pprot   ( pprot   ),
-    .pselx   ( pselx   ),
-    .penable ( penable ),
-    .pwrite  ( pwrite  ),
-    .pwdata  ( pwdata  ),
-    .pstrb   ( pstrb   ),
-    .pready  ( pready  ),
-    .prdata  ( prdata  ),
-    .pslverr ( pslverr ),
-    .pwakeup ( pwakeup ),
-    .pauser  ( pauser  ),
-    .pwuser  ( pwuser  ),
-    .pruser  ( pruser  ),
-    .pbuser  ( pbuser  )
-  );
-  initial begin
-    uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_requester0_vif", apb5_requester0_if);
-  end
+  // From top signals to APB5 completer1 inputs
+  assign apb5_completer1_if.paddr   = paddr;
+  assign apb5_completer1_if.pprot   = pprot;
+  assign apb5_completer1_if.pselx   = pselx & completer1_select;
+  assign apb5_completer1_if.penable = penable & completer1_select;
+  assign apb5_completer1_if.pwrite  = pwrite;
+  assign apb5_completer1_if.pwdata  = pwdata;
+  assign apb5_completer1_if.pstrb   = pstrb;
+  assign apb5_completer1_if.pwakeup = pwakeup;
+  assign apb5_completer1_if.pauser  = pauser;
+  assign apb5_completer1_if.pwuser  = pwuser;   
 
-  bind top apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_completer0_if (
-    .pclk    ( clock   ),
-    .presetn ( resetn  ),
-    .paddr   ( paddr   ),
-    .pprot   ( pprot   ),
-    .pselx   ( pselx   ),
-    .penable ( penable ),
-    .pwrite  ( pwrite  ),
-    .pwdata  ( pwdata  ),
-    .pstrb   ( pstrb   ),
-    .pready  ( pready  ),
-    .prdata  ( prdata  ),
-    .pslverr ( pslverr ),
-    .pwakeup ( pwakeup ),
-    .pauser  ( pauser  ),
-    .pwuser  ( pwuser  ),
-    .pruser  ( pruser  ),
-    .pbuser  ( pbuser  )
-  );
-  initial begin
-    uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_completer0_vif", apb5_completer0_if);
-  end
+  // From APB5 completer outputs to top signals (combined)
+  assign pready  = completer0_select ? apb5_completer0_if.pready  :
+                   completer1_select ? apb5_completer1_if.pready  : 1'b1;
 
-  bind top apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_completer1_if (
-    .pclk    ( clock   ),
-    .presetn ( resetn  ),
-    .paddr   ( paddr   ),
-    .pprot   ( pprot   ),
-    .pselx   ( pselx   ),
-    .penable ( penable ),
-    .pwrite  ( pwrite  ),
-    .pwdata  ( pwdata  ),
-    .pstrb   ( pstrb   ),
-    .pready  ( pready  ),
-    .prdata  ( prdata  ),
-    .pslverr ( pslverr ),
-    .pwakeup ( pwakeup ),
-    .pauser  ( pauser  ),
-    .pwuser  ( pwuser  ),
-    .pruser  ( pruser  ),
-    .pbuser  ( pbuser  )
-  );
-  initial begin
-    uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_completer1_vif", apb5_completer1_if);
-  end
+  assign prdata  = completer0_select ? apb5_completer0_if.prdata  :
+                   completer1_select ? apb5_completer1_if.prdata  : '0;
 
+  assign pslverr = completer0_select ? apb5_completer0_if.pslverr :
+                   completer1_select ? apb5_completer1_if.pslverr : '0;
+
+  assign pruser  = completer0_select ? apb5_completer0_if.pruser  :
+                   completer1_select ? apb5_completer1_if.pruser  : '0;
+
+  assign pbuser  = completer0_select ? apb5_completer0_if.pbuser  :
+                   completer1_select ? apb5_completer1_if.pbuser  : '0;
 
   initial begin
     clock = 0;
@@ -136,9 +123,9 @@ module top;
   initial begin
     $dumpfile("dump.vcd"); $dumpvars;
     
-    // uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_requester0_vif", apb5_requester0_if);
-    // uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_completer0_vif", apb5_completer0_if);
-    // uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_completer1_vif", apb5_completer1_if);
+    uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_requester0_vif", apb5_requester0_if);
+    uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_completer0_vif", apb5_completer0_if);
+    uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_completer1_vif", apb5_completer1_if);
     
     uvm_top.finish_on_completion = 1;
     
