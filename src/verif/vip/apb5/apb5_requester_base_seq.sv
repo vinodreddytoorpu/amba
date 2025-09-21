@@ -24,6 +24,10 @@ class apb5_requester_base_seq #(
 
   rand bit [0:0] b2b_transfer; // back to back transfer
 
+  constraint c_addr_range {
+    addr[1:0] == 0; // aligned address
+  }
+
   apb5_packet #(ADDR_WIDTH, DATA_WIDTH, USER_REQ_WIDTH, USER_DATA_WIDTH) pkt;
   extern function new(string name = "apb5_requester_base_seq");
   extern task body();
@@ -46,7 +50,7 @@ task apb5_requester_base_seq::body();
     addr         == addr;
     wdata        == wdata;
     b2b_transfer == b2b_transfer;
-  }) `uvm_fatal(get_name(), "Randomization Failed for APB5 completer base sequence")
-  `uvm_info(get_name(), $sformatf("APB5 completer base sequence item : %s", pkt.sprint()), UVM_LOW)
+  }) `uvm_fatal(get_name(), "Randomization Failed for APB5 requester base sequence")
+  `uvm_info(get_name(), $sformatf("APB5 requester base sequence item : %s", pkt.sprint()), UVM_LOW)
   finish_item(pkt);
 endtask : body
