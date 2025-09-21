@@ -129,6 +129,6 @@ module top;
     
     uvm_top.finish_on_completion = 1;
     
-    run_test("amba_apb5_completer_write_read_test");
+    run_test("amba_base_test");
   end
 endmodule : top
