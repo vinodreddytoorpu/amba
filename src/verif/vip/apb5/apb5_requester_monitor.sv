@@ -14,6 +14,8 @@ class apb5_requester_monitor #(
 
   uvm_component parent_comp;
 
+  apb5_packet #(ADDR_WIDTH, DATA_WIDTH, USER_REQ_WIDTH, USER_DATA_WIDTH) pkt;
+
   uvm_analysis_port #(apb5_packet #(ADDR_WIDTH, DATA_WIDTH, USER_REQ_WIDTH, USER_DATA_WIDTH)) ap;
 
   extern function new(string name = "apb5_requester_monitor", uvm_component parent);
@@ -40,4 +42,29 @@ endfunction : connect_phase
 
 task apb5_requester_monitor::main_phase(uvm_phase phase);
   super.main_phase(phase);
+
+  forever begin
+    @(posedge vif.pclk);
+    if(vif.presetn) begin
+      if(vif.pselx && vif.penable && vif.pready) begin
+        pkt = apb5_packet #(ADDR_WIDTH, DATA_WIDTH, USER_REQ_WIDTH, USER_DATA_WIDTH)::type_id::create("pkt");
+        
+        pkt.write    = vif.pwrite;
+        pkt.addr     = vif.paddr;
+        pkt.prot     = vif.pprot;
+        pkt.strb     = vif.pstrb;
+        pkt.wakeup   = vif.pwakeup;
+        pkt.auser    = vif.pauser;
+        pkt.wuser    = vif.pwuser;
+        pkt.slverr   = vif.pslverr;
+        pkt.ruser    = vif.pruser;
+        pkt.buser    = vif.pbuser;
+        
+        if(vif.pwrite) pkt.wdata = vif.pwdata; // write_transaction
+        else if(!vif.pwrite) pkt.rdata = vif.prdata; // read_transaction
+        `uvm_info(get_name(), $sformatf("Monitor observed a transaction: \n%0s", pkt.sprint()), UVM_LOW)
+        ap.write(pkt);
+      end
+    end
+  end
 endtask : main_phase

@@ -27,7 +27,7 @@ function void amba_apb5_requester_subscriber::build_phase(uvm_phase phase);
 endfunction : build_phase
 
 function void amba_apb5_requester_subscriber::write(apb5_packet #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) t);
-  `uvm_info(get_name(), $psprintf("[amba_apb5_requester_subscriber] received transaction from apb5 completer monitor to subscriber: \n%0s", t.sprint()), UVM_LOW)
+  `uvm_info(get_name(), $psprintf("[amba_apb5_requester_subscriber] received transaction from apb5 requester monitor to subscriber: \n%0s", t.sprint()), UVM_LOW)
 endfunction : write
     
 task amba_apb5_requester_subscriber::main_phase(uvm_phase phase);
