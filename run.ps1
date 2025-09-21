@@ -15,6 +15,12 @@
 #   }
 # }
 
+# Clean up previous simulation files
+if (Test-Path "work") { Remove-Item -Recurse -Force "work" }
+Get-ChildItem -Path . -Include *.log,*.wlf,transcript*,*.vcd -File | Remove-Item -Force
+
+# Add 1 second delay before compile
+Start-Sleep -Seconds 1
 
 $files = @(
   "src/verif/tb/testbench.sv"
@@ -30,7 +36,7 @@ foreach ($file in $files) {
 }
 
 # Run simulation after compilation with cli
-# vsim -c -do "run -all; quit" work.top *> simulate.log
+vsim -c -do "run -all; quit" work.top *> simulate.log
 
 # Run simulation with GUI
-vsim work.top
+# vsim work.top
