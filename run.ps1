@@ -36,7 +36,7 @@ foreach ($file in $files) {
 }
 
 # Run simulation after compilation with cli
-vsim -c -do "run -all; quit" work.top *> simulate.log
+vsim -c -do "run -all; quit" work.top +UVM_TESTNAME=amba_apb5_completer_write_read_test *> simulate.log
 
 # Run simulation with GUI
-# vsim work.top
+# vsim work.top +UVM_TESTNAME=amba_apb5_completer_write_read_test
