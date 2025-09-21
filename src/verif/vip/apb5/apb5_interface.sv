@@ -30,6 +30,8 @@ interface apb5_interface #(
   logic [USER_DATA_WIDTH-1:0] pbuser;
 
   modport mp_requester (
+    input pclk,
+    input presetn,
     // source : requester
     output paddr  ,
     output pprot  ,
@@ -55,6 +57,8 @@ interface apb5_interface #(
   );
 
   modport mp_completer (
+    input pclk,
+    input presetn,
     // source : requester
     input  paddr  ,
     input  pprot  ,
@@ -80,6 +84,8 @@ interface apb5_interface #(
   );
 
   modport mp_monitor (
+    input pclk,
+    input presetn,
     // source : requester
     input paddr  ,
     input pprot  ,
