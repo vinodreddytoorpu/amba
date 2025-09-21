@@ -20,7 +20,7 @@ if (Test-Path "work") { Remove-Item -Recurse -Force "work" }
 Get-ChildItem -Path . -Include *.log,*.wlf,transcript*,*.vcd -File | Remove-Item -Force
 
 # Add 1 second delay before compile
-Start-Sleep -Seconds 1
+# Start-Sleep -Seconds 1
 
 $files = @(
   "src/verif/tb/testbench.sv"
