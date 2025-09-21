@@ -46,13 +46,12 @@ module top;
   assign completer0_select = addr_in_range(apb5_requester0_if.paddr, `AMBA_APB5_COMPLETER1_ADDR_START, `AMBA_APB5_COMPLETER1_ADDR_END);
   assign completer1_select = addr_in_range(apb5_requester0_if.paddr, `AMBA_APB5_COMPLETER1_ADDR_START, `AMBA_APB5_COMPLETER1_ADDR_END);
 
-  apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_requester0_if (clock, resetn);
+  // apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_requester0_if (clock, resetn);
 
-  apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_completer0_if (clock, resetn);
+  // apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_completer0_if (clock, resetn);
 
-  apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_completer1_if (clock, resetn);
+  // apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_completer1_if (clock, resetn);
 
-  /*
   bind top apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH) apb5_requester0_if (
     .pclk    ( clock   ),
     .presetn ( resetn  ),
@@ -122,7 +121,6 @@ module top;
     uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_completer1_vif", apb5_completer1_if);
   end
 
-  */
 
   initial begin
     clock = 0;
@@ -138,9 +136,9 @@ module top;
   initial begin
     $dumpfile("dump.vcd"); $dumpvars;
     
-    uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_requester0_vif", apb5_requester0_if);
-    uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_completer0_vif", apb5_completer0_if);
-    uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_completer1_vif", apb5_completer1_if);
+    // uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_requester0_vif", apb5_requester0_if);
+    // uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_completer0_vif", apb5_completer0_if);
+    // uvm_config_db #(virtual apb5_interface #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH))::set (null, "*", "apb5_completer1_vif", apb5_completer1_if);
     
     uvm_top.finish_on_completion = 1;
     
