@@ -40,11 +40,16 @@ task apb5_requester_driver::main_phase(uvm_phase phase);
     begin
       forever begin
         if(vif.presetn == 1'b0) begin
-          vif.pready  <= 1'b1; // default ready
-          vif.prdata  <= '0;
-          vif.pslverr <= 1'b0;
-          vif.pruser  <= '0;
-          vif.pbuser  <= '0;
+          vif.paddr   <= '0;
+          vif.pprot   <= '0;
+          vif.pselx   <= 1'b0;
+          vif.penable <= 1'b0;
+          vif.pwrite  <= 1'b0;
+          vif.pwdata  <= '0;
+          vif.pstrb   <= '0;
+          vif.pwakeup <= 1'b0;
+          vif.pauser  <= '0;
+          vif.pwuser  <= '0;
         end
         @(vif.cb_requester); 
       end
