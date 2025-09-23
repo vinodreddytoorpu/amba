@@ -41,15 +41,15 @@ task apb5_requester_base_seq::body();
   pkt = apb5_packet #(ADDR_WIDTH, DATA_WIDTH, USER_REQ_WIDTH, USER_DATA_WIDTH)::type_id::create("pkt");
   start_item(pkt);
   if(!pkt.randomize() with {
-    write        == write;
-    strb         == strb;
-    prot         == prot;
-    wakeup       == wakeup;
-    auser        == auser;
-    wuser        == wuser;
-    addr         == addr;
-    wdata        == wdata;
-    b2b_transfer == b2b_transfer;
+    write        == local::write;
+    strb         == local::strb;
+    prot         == local::prot;
+    wakeup       == local::wakeup;
+    auser        == local::auser;
+    wuser        == local::wuser;
+    addr         == local::addr;
+    wdata        == local::wdata;
+    b2b_transfer == local::b2b_transfer;
   }) `uvm_fatal(get_name(), "Randomization Failed for APB5 requester base sequence")
   `uvm_info(get_name(), $sformatf("APB5 requester base sequence item : \n%0s", pkt.sprint()), UVM_LOW)
   finish_item(pkt);
