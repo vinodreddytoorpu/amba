@@ -53,7 +53,7 @@ task apb5_requester_driver::main_phase(uvm_phase phase);
           vif.pauser  <= '0;
           vif.pwuser  <= '0;
         end
-        @(vif.cb_requester); 
+        @(vif.mp_requester.pclk); 
       end
     end  
     begin
@@ -62,7 +62,7 @@ task apb5_requester_driver::main_phase(uvm_phase phase);
         seq_item_port.get_next_item(apb5_pkt);
 
         while(1) begin
-          if(vif.presetn == 1'b0) @(vif.cb_requester); 
+          if(vif.presetn == 1'b0) @(vif.mp_requester.pclk); 
           else break;
         end
         if(vif.pclk == 1'b0) @(posedge vif.pclk); // wait for posedge if clk is low
@@ -81,14 +81,14 @@ task apb5_requester_driver::main_phase(uvm_phase phase);
         `uvm_info(get_name(), $sformatf("APB5 Requester Driver APB_SETUP_PHASE | paddr = %0h, pprot = %0h, pselx = %0h, penable = %0h, pwrite = %0h, pwdata = %0h, pstrb = %0h, pwakeup = %0h, pauser = %0h, pwuser = %0h", apb5_pkt.addr, apb5_pkt.prot, 1'b1, 1'b0, apb5_pkt.write, apb5_pkt.wdata, apb5_pkt.strb, apb5_pkt.wakeup, apb5_pkt.auser, apb5_pkt.wuser), UVM_LOW)
 
         // Move to ACCESS phase
-        @(vif.cb_requester);
+        @(vif.mp_requester.pclk);
         vif.penable <= 1'b1;
         `uvm_info(get_name(), $sformatf("APB5 Requester Driver APB_ACCESS_PHASE | penable = %0h, pready = %0h", 1'b1, vif.cb_requester.pready), UVM_LOW)
 
         // Wait for slave to assert PREADY
         do begin
           `uvm_info(get_name(), $sformatf("APB5 Requester Driver APB_ACCESS_PHASE waiting for | pready = %0h", vif.cb_requester.pready), UVM_LOW)
-          @(vif.cb_requester);
+          @(vif.mp_requester.pclk);
         end while (!vif.cb_requester.pready);
 
         // Sample response
@@ -101,7 +101,7 @@ task apb5_requester_driver::main_phase(uvm_phase phase);
         `uvm_info(get_name(), $sformatf("APB5 Requester Driver | pslverr = %0h, prdata = %0h, pruser = %0h, pbuser = %0h", vif.cb_requester.pslverr, vif.cb_requester.prdata, vif.cb_requester.pruser, vif.cb_requester.pbuser), UVM_LOW)
 
         // Deassert select and enable
-        @(vif.cb_requester);
+        @(vif.mp_requester.pclk);
         vif.pselx   <= 1'b0;
         vif.penable <= 1'b0;
 
