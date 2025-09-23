@@ -60,8 +60,8 @@ task apb5_requester_monitor::main_phase(uvm_phase phase);
         pkt.ruser    = vif.pruser;
         pkt.buser    = vif.pbuser;
         
-        if(vif.pwrite) pkt.wdata = vif.pwdata; // write_transaction
-        else if(!vif.pwrite) pkt.rdata = vif.prdata; // read_transaction
+        if(!vif.pwrite) pkt.wdata = vif.pwdata; // write_transaction
+        else if(vif.pwrite) pkt.rdata = vif.prdata; // read_transaction
         `uvm_info(get_name(), $sformatf("Monitor observed a transaction: \n%0s", pkt.sprint()), UVM_LOW)
         ap.write(pkt);
       end
