@@ -15,28 +15,26 @@ task amba_apb5_requester_write_read_seq::body();
   apb5_seq = apb5_requester_base_seq #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH)::type_id::create("apb5_seq");
   if(!apb5_seq.randomize() with { 
     // addr inside {[`AMBA_APB5_COMPLETER0_ADDR_START : `AMBA_APB5_COMPLETER0_ADDR_END]};
-    addr == 'h1000;
+    addr         == 'h1000;
     write        == 0;
     strb         == {`AMBA_APB5_DATA_WIDTH/8{1'b1}};
     wdata        == 'hDEADBEEF;
     wakeup       == 1'b0;
     b2b_transfer == 1'b0;
-  }) `uvm_fatal("SEQ", "Randomization failed for apb5_requester_seq")
-  `uvm_info(get_name(), $psprintf("Starting APB5 Read Transaction with write = %0h, addr = 0x%0h, data = %0h, strb = %0h", apb5_seq.write, apb5_seq.addr, apb5_seq.wdata, apb5_seq.strb), UVM_LOW)
+  }) `uvm_fatal(get_name(), "Randomization failed for apb5_requester_seq")
+  `uvm_info(get_name(), $psprintf("Starting APB5 Write Transaction with write = %0h, addr = 0x%0h, data = %0h, strb = %0h", apb5_seq.write, apb5_seq.addr, apb5_seq.wdata, apb5_seq.strb), UVM_LOW)
   apb5_seq.start(env.v_seqr.apb5_req_seqr[0]);
 
   #100ns;
 
-  // apb5_seq = apb5_requester_base_seq #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH)::type_id::create("apb5_seq");
-  // if(!apb5_seq.randomize() with { 
-  //   // addr inside {[`AMBA_APB5_COMPLETER0_ADDR_START : `AMBA_APB5_COMPLETER0_ADDR_END]};
-  //   addr == 'h1000;
-  //   write        == 1;
-  //   strb         == {`AMBA_APB5_DATA_WIDTH/8{1'b1}};
-  //   wdata        == 'hDEADBEEF;
-  //   wakeup       == 1'b0;
-  //   b2b_transfer == 1'b0;
-  // }) `uvm_fatal("SEQ", "Randomization failed for apb5_requester_seq")
-  // apb5_seq.start(env.v_seqr.apb5_req_seqr[0]);
+  apb5_seq = apb5_requester_base_seq #(`AMBA_APB5_ADDR_WIDTH, `AMBA_APB5_DATA_WIDTH, `AMBA_APB5_USER_REQ_WIDTH, `AMBA_APB5_USER_DATA_WIDTH)::type_id::create("apb5_seq");
+  if(!apb5_seq.randomize() with { 
+    // addr inside {[`AMBA_APB5_COMPLETER0_ADDR_START : `AMBA_APB5_COMPLETER0_ADDR_END]};
+    addr         == 'h1000;
+    write        == 1;
+    wakeup       == 1'b0;
+  }) `uvm_fatal(get_name(), "Randomization failed for apb5_requester_seq")
+  `uvm_info(get_name(), $psprintf("Starting APB5 Read Transaction with write = %0h, addr = 0x%0h", apb5_seq.write, apb5_seq.addr), UVM_LOW)
+  apb5_seq.start(env.v_seqr.apb5_req_seqr[0]);
 
 endtask : body
