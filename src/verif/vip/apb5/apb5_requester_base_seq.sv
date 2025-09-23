@@ -51,6 +51,6 @@ task apb5_requester_base_seq::body();
     wdata        == wdata;
     b2b_transfer == b2b_transfer;
   }) `uvm_fatal(get_name(), "Randomization Failed for APB5 requester base sequence")
-  `uvm_info(get_name(), $sformatf("APB5 requester base sequence item : %s", pkt.sprint()), UVM_LOW)
+  `uvm_info(get_name(), $sformatf("APB5 requester base sequence item : \n%0s", pkt.sprint()), UVM_LOW)
   finish_item(pkt);
 endtask : body
